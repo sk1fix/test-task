@@ -11,7 +11,6 @@ class ProductStatusEnum(enum.Enum):
     PENDING = "в ожидании тестов"
     PASSED = "соответствует"
     FAILED = "брак"
-    IN_PROGRESS = "в процессе тестирования"
 
 
 class Product(Base):
@@ -21,7 +20,8 @@ class Product(Base):
     alloy_grade: Mapped[str]
     weight: Mapped[float]
     batch_number: Mapped[str]
-    status: Mapped[ProductStatusEnum] = mapped_column(Enum(ProductStatusEnum))
+    status: Mapped[ProductStatusEnum] = mapped_column(
+        Enum(ProductStatusEnum), default=ProductStatusEnum.PENDING)
     test_id: Mapped[int | None] = mapped_column(ForeignKey(
         'quality_test.id', ondelete="SET NULL"), unique=True)
     created_at: Mapped[datetime] = mapped_column(

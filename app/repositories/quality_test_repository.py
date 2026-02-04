@@ -1,6 +1,6 @@
 from sqlalchemy import select, update
 
-from models.models import QualityTest, Product
+from models.models import QualityTest, Product, ProductStatusEnum
 
 
 class QualityRepository:
@@ -13,9 +13,10 @@ class QualityRepository:
             self.session.add(query)
             await self.session.flush()
 
+            new_status = ProductStatusEnum.PASSED if data.analysis_result else ProductStatusEnum.FAILED
             stmt = update(Product).where(
                 Product.batch_number == product_batch_number
-            ).values(test_id=query.id)
+            ).values(test_id=query.id, status=new_status)
             await self.session.execute(stmt)
 
         return query

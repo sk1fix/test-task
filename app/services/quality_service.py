@@ -16,8 +16,8 @@ class QualityService:
         )
         return new_dto
 
-    async def create_test(self, data):
-        result = await self.repo.create_test(data)
+    async def create_test(self, data, batch_number):
+        result = await self.repo.create_test(data, batch_number)
         new_dto = CreateTestDto(
             inspector_fullname=result.inspector_fullname,
             standart=result.standart,

@@ -20,4 +20,4 @@ class ProductRepository:
         query = select(Product).where(data == Product.alloy_grade)
         result = await self.session.execute(query)
 
-        return result.scalars()
+        return result.scalars().first()

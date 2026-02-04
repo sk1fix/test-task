@@ -1,0 +1,21 @@
+import uvicorn
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+
+from api.controllers.product import product
+from api.controllers.quality_test import quality
+from core.config import settings
+
+
+app = FastAPI()
+
+app.include_router(product)
+app.include_router(quality)
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=True
+    )

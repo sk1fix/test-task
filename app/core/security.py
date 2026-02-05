@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 
 import jwt
+from jose import JWTError
 from passlib.context import CryptContext
 
 from core.config import settings
+from core.exceptions import InvalidTokenException
 
 
 pwd_context = CryptContext(
@@ -31,18 +33,19 @@ def create_token(data: dict):
 
 
 def get_user_data_from_token(token: str) -> dict:
-    payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-    return {
-        "user_id": payload.get("user_id"),
-        "username": payload.get("username"),
-        "login": payload.get("sub"),
-        "is_admin": payload.get("is_admin", False)
-    }
-
-
-def is_admin_user(token: str) -> bool:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-        return payload.get("is_admin", False)
-    except:
-        return False
+
+        exp_timestamp = payload.get("exp")
+        exp_datetime = datetime.fromtimestamp(exp_timestamp)
+        if datetime.utcnow() > exp_datetime:
+            raise InvalidTokenException("Срок действия токена истек")
+
+        return {
+            "user_id": payload.get("user_id"),
+            "username": payload.get("username"),
+            "login": payload.get("sub"),
+            "is_admin": payload.get("is_admin", False)
+        }
+    except JWTError:
+        return None

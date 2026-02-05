@@ -43,12 +43,12 @@ class AuthRepository:
 
         return user
 
-    async def get_by_fullname(self, fullname):
-        query = select(User).where(User.fullname == fullname)
+    async def get_by_id(self, id):
+        query = select(User).where(User.id == id)
         result = await self.session.execute(query)
         user = result.scalar_one_or_none()
 
         if not user:
-            raise UserNotFoundException(fullname)
+            raise UserNotFoundException(id)
 
-        return user
+        return True

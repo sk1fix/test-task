@@ -14,19 +14,20 @@ class QualityRepository:
             data: CreateTestDto,
             product_batch_number: str
     ) -> QualityTest:
-        async with self.session.begin():
-            query = QualityTest(**data.model_dump())
-            self.session.add(query)
-            await self.session.flush()
 
-            if data.analysis_result:
-                new_status = ProductStatusEnum.PASSED
-            else:
-                new_status = ProductStatusEnum.FAILED
-            stmt = update(Product).where(
-                Product.batch_number == product_batch_number
-            ).values(test_id=query.id, status=new_status)
-            await self.session.execute(stmt)
+        query = QualityTest(**data.model_dump())
+        self.session.add(query)
+        await self.session.flush()
+
+        if data.analysis_result:
+            new_status = ProductStatusEnum.PASSED
+        else:
+            new_status = ProductStatusEnum.FAILED
+        stmt = update(Product).where(
+            Product.batch_number == product_batch_number
+        ).values(test_id=query.id, status=new_status)
+        await self.session.execute(stmt)
+        await self.session.commit()
 
         return query
 
@@ -41,8 +42,8 @@ class QualityRepository:
         result = await self.session.execute(query)
 
         test = result.scalar_one_or_none()
-        
+
         if test is None:
             raise QualityTestNotFoundException(batch_number)
-        
+
         return test

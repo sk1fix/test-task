@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter
 
-from api.dependencies import get_quality_service
+from api.dependencies import get_quality_service, get_quality_admin_service
 from services.quality_service import QualityService
 from schemas.quality_test import GetTestDto, CreateTestDto
 
@@ -16,7 +16,7 @@ quality = APIRouter(tags=['Quality Test Route'])
 async def create(
     data: CreateTestDto,
     batch_number: str,
-    service: QualityService = Depends(get_quality_service)
+    service: QualityService = Depends(get_quality_admin_service)
 ) -> CreateTestDto:
     result = await service.create_test(data, batch_number)
     return result

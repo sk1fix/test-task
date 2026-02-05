@@ -50,10 +50,10 @@ class InvalidCredentialsException(HTTPException):
 
 
 class InvalidTokenException(HTTPException):
-    def __init__(self):
+    def __init__(self, detail: str = "Недействительный или просроченный токен"):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Недействительный или просроченный токен",
+            detail=detail,
             headers={"WWW-Authenticate": "Bearer"}
         )
 
@@ -63,12 +63,4 @@ class InsufficientPermissionsException(HTTPException):
         super().__init__(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Недостаточно прав для выполнения операции"
-        )
-
-
-class BadRequestException(HTTPException):
-    def __init__(self, detail: str):
-        super().__init__(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=detail
         )

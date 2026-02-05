@@ -2,7 +2,7 @@ import enum
 from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, Enum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database.base import Base
 
@@ -23,7 +23,7 @@ class Product(Base):
     status: Mapped[ProductStatusEnum] = mapped_column(
         Enum(ProductStatusEnum), default=ProductStatusEnum.PENDING)
     test_id: Mapped[int | None] = mapped_column(ForeignKey(
-        'quality_test.id', ondelete="CASCADE"), unique=True)
+        'quality_test.id'), unique=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,

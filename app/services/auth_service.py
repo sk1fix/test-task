@@ -47,4 +47,3 @@ class AuthService:
 
     async def get_user_info(self, token: str):
         fullname = get_user_data_from_token(token)
-

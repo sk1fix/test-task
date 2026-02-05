@@ -27,6 +27,9 @@ class Settings(BaseSettings):
 
     DB_URL: PostgresDsn
 
+    SECRET_KEY: str
+    ADMIN_KEY: str
+
 
 def get_settings() -> Settings:
     s = Settings()

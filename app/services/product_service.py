@@ -33,7 +33,7 @@ class ProductService:
         )
         return new_dto
 
-    async def delete_product(self, data: str):
+    async def delete_product(self, data: str) -> bool:
         await self.user_repo.get_by_id(self.user_data.get("user_id"))
         result = await self.repo.delete_product(data)
         return result

@@ -2,7 +2,10 @@ from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
 
 from models.models import Product, QualityTest
-from core.exceptions import ProductAlreadyExistsException, ProductNotFoundException
+from core.exceptions import (
+    ProductAlreadyExistsException,
+    ProductNotFoundException
+)
 from schemas.product import GetProductDto, CreateProductDto
 
 
@@ -31,7 +34,7 @@ class ProductRepository:
 
         return product
 
-    async def delete_product(self, batch_number: str):
+    async def delete_product(self, batch_number: str) -> bool:
         query = select(Product).where(Product.batch_number == batch_number)
         result = await self.session.execute(query)
         product = result.scalar_one_or_none()

@@ -1,8 +1,18 @@
 from fastapi import HTTPException
 
-from core.security import verify_password, get_password_hash, create_token, get_user_data_from_token
-from schemas.auth import UsersRegisterDto, Token, UserResponseDto, UserLoginDto
-from core.exceptions import InvalidCredentialsException, InvalidTokenException
+from core.security import (
+    verify_password,
+    get_password_hash,
+    create_token,
+    get_user_data_from_token
+)
+from schemas.auth import (
+    UsersRegisterDto,
+    Token,
+    UserResponseDto,
+    UserLoginDto
+)
+from core.exceptions import InvalidCredentialsException
 from core.config import settings
 
 
@@ -44,6 +54,3 @@ class AuthService:
             return Token(access_token=access_token)
         else:
             raise InvalidCredentialsException()
-
-    async def get_user_info(self, token: str):
-        fullname = get_user_data_from_token(token)

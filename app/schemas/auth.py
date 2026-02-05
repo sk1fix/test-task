@@ -19,10 +19,6 @@ class UserLoginDto(BaseModel):
     password: str
 
 
-class UserHashPass(BaseModel):
-    hashed_password: str
-
-
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"

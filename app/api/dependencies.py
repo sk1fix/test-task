@@ -8,7 +8,10 @@ from services.auth_service import AuthService
 from repositories.product_repository import ProductRepository
 from repositories.quality_test_repository import QualityRepository
 from repositories.auth_repository import AuthRepository
-from core.exceptions import InvalidTokenException, InsufficientPermissionsException
+from core.exceptions import (
+    InvalidTokenException,
+    InsufficientPermissionsException
+)
 from core.security import get_user_data_from_token
 
 
@@ -16,7 +19,9 @@ async def get_token_from_cookie(request: Request) -> str:
     return request.cookies.get("access_token")
 
 
-async def get_current_user(token: str = Depends(get_token_from_cookie)) -> dict:
+async def get_current_user(
+        token: str = Depends(get_token_from_cookie)
+) -> dict:
     if not token:
         raise InvalidTokenException("Токен отсутствует. Войдите в систему.")
 
@@ -25,7 +30,9 @@ async def get_current_user(token: str = Depends(get_token_from_cookie)) -> dict:
     return user_data
 
 
-async def get_current_admin_user(user_data: dict = Depends(get_current_user)) -> dict:
+async def get_current_admin_user(
+        user_data: dict = Depends(get_current_user)
+) -> dict:
     if not user_data.get("is_admin", False):
         raise InsufficientPermissionsException()
 

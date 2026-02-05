@@ -22,7 +22,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_token(data: dict):
+def create_token(data: dict) -> str:
     payload = {
         **data,
         "exp": datetime.utcnow() + timedelta(hours=48),
@@ -34,7 +34,11 @@ def create_token(data: dict):
 
 def get_user_data_from_token(token: str) -> dict:
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=["HS256"]
+        )
 
         exp_timestamp = payload.get("exp")
         exp_datetime = datetime.fromtimestamp(exp_timestamp)

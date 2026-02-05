@@ -41,6 +41,6 @@ async def get_by_batch_number(
 async def delete_product(
     batch_number: str,
     service: ProductService = Depends(get_product_admin_service)
-):
+) -> bool:
     result = await service.delete_product(batch_number)
     return result

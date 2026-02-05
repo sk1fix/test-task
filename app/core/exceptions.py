@@ -21,7 +21,10 @@ class QualityTestNotFoundException(HTTPException):
     def __init__(self, batch_number: str):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Теста качества для номером партии {batch_number} не найдено"
+            detail=(
+                f"Теста качества для номером партии {batch_number} "
+                f"не найдено"
+            )
         )
 
 
@@ -50,7 +53,10 @@ class InvalidCredentialsException(HTTPException):
 
 
 class InvalidTokenException(HTTPException):
-    def __init__(self, detail: str = "Недействительный или просроченный токен"):
+    def __init__(
+            self,
+            detail: str = "Недействительный или просроченный токен"
+    ):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=detail,

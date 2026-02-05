@@ -2,8 +2,6 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from models.models import ProductStatusEnum
-
 
 class CreateProductDto(BaseModel):
     alloy_grade: str

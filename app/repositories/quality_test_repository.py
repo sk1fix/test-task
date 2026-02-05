@@ -2,6 +2,7 @@ from sqlalchemy import select, update
 
 from models.models import QualityTest, Product, ProductStatusEnum
 from schemas.quality_test import GetTestDto, CreateTestDto
+from core.exceptions import QualityTestNotFoundException
 
 
 class QualityRepository:
@@ -39,4 +40,9 @@ class QualityRepository:
         ).where(Product.batch_number == batch_number)
         result = await self.session.execute(query)
 
-        return result.scalars().first()
+        test = result.scalar_one_or_none()
+        
+        if test is None:
+            raise QualityTestNotFoundException(batch_number)
+        
+        return test

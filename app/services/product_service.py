@@ -5,8 +5,8 @@ class ProductService:
     def __init__(self, repo) -> None:
         self.repo = repo
 
-    async def get_by_grade(self, data: str) -> GetProductDto:
-        result = await self.repo.get_product_by_grade(data)
+    async def get_by_number(self, data: str) -> GetProductDto:
+        result = await self.repo.get_product_by_number(data)
         new_dto = GetProductDto(
             alloy_grade=result.alloy_grade,
             weight=result.weight,
@@ -28,3 +28,7 @@ class ProductService:
             batch_number=result.batch_number
         )
         return new_dto
+
+    async def delete_product(self, data: str):
+        result = await self.repo.delete_product(data)
+        return result

@@ -19,11 +19,11 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     alloy_grade: Mapped[str]
     weight: Mapped[float]
-    batch_number: Mapped[str]
+    batch_number: Mapped[str] = mapped_column(unique=True)
     status: Mapped[ProductStatusEnum] = mapped_column(
         Enum(ProductStatusEnum), default=ProductStatusEnum.PENDING)
     test_id: Mapped[int | None] = mapped_column(ForeignKey(
-        'quality_test.id', ondelete="SET NULL"), unique=True)
+        'quality_test.id', ondelete="CASCADE"), unique=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,

@@ -21,13 +21,26 @@ async def create(
 
 
 @product.get(
-    '/product/{grade}',
-    summary='Get product by alloy grade',
+    '/product/{batch_number}',
+    summary='Get product by batch number',
     tags=['Products Route']
 )
-async def get_by_grade(
-    grade: str,
+async def get_by_batch_number(
+    batch_number: str,
     service: ProductService = Depends(get_product_service)
 ) -> GetProductDto:
-    result = await service.get_by_grade(grade)
+    result = await service.get_by_number(batch_number)
+    return result
+
+
+@product.delete(
+    '/product/{batch_number}',
+    summary='Remove product by batch number',
+    tags=['Products Route']
+)
+async def delete_product(
+    batch_number: str,
+    service: ProductService = Depends(get_product_service)
+):
+    result = await service.delete_product(batch_number)
     return result
